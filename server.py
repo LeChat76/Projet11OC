@@ -71,6 +71,7 @@ def purchasePlaces():
         error_message = "This competition is closed!"
         flash(error_message)
         return redirect(url_for('book', club=club['name'], competition=competition['name']))
+    club['points'] = str((int(club['points']) - placesRequired))
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
