@@ -31,7 +31,7 @@ Debugging and testing web application coded with Flask.
   * Description : a club must not purchase more than 12 points
   * Why this issue : noting coded to prevent purchase of more than 12 places
   * Resolution : adding tag max="12" in HTML page. In that way, unable to enter more than 12 places to purchase
-  branch : https://github.com/LeChat76/Projet11OC/tree/bug/Clubs_shouldnt_be_able_to_book_more_than_12_places_per_competition
+  branch : https://github.com/LeChat76/Projet11OC/tree/bug/Clubs_shouldnt_be_able_to_book_more_than_12_places_per_competition 
 * Bug "Booking places in past competitions":
   * Description : a club must not be able to purchase places for a dated competition
   * Why this issue : nothing coded to check date of competition purchased
