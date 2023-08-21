@@ -13,6 +13,12 @@ def loadCompetitions():
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
+def searchClub(email):
+    result = [club for club in clubs if club['email'] == email]
+    if result:
+        return result[0]
+    else:
+        return None
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -26,8 +32,13 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    club = searchClub(request.form['email'])
+    if club:
+        return render_template('welcome.html',club=club,competitions=competitions)
+    else:
+        error_message = "Club not found for the provided email."
+        flash(error_message)
+        return redirect(url_for('index'))
 
 
 @app.route('/book/<competition>/<club>')
