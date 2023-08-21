@@ -36,7 +36,6 @@ def showSummary():
     if club:
         return render_template('welcome.html',club=club,competitions=competitions)
     else:
-        print("TOP")
         error_message = "Club not found for the provided email."
         flash(error_message)
         return redirect(url_for('index'))
