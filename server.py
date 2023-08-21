@@ -62,6 +62,10 @@ def purchasePlaces():
         error_message = "You have not enough point."
         flash(error_message)
         return redirect(url_for('book', club=club['name'], competition=competition['name']))
+    if placesRequired > 12 or placesRequired < 1:
+        error_message = "You can only purchase from 1 to 12 places."
+        flash(error_message)
+        return redirect(url_for('book', club=club['name'], competition=competition['name']))
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
