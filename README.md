@@ -1,51 +1,54 @@
-# gudlift-registration
+<p align="center">
+    <img alt="logo" src="https://github.com/LeChat76/Projet10OC/assets/119883313/881f780c-7907-4f44-b294-7c3bb0b66dda">
+</p>
 
-1. Why
+# Projet11OC
+Debugging and testing web application coded with Flask.
 
+## Installation
+* Clone repository: `git clone https://github.com/LeChat76/Projet11OC.git`  
+* Enter in created folder: `cd Projet11OC`  
+* Create virtual environment: `python -m venv .venv`  
+* Activate environment:  
+    * for Linux `source .venv/bin/activate`  
+    * for Windows `.\.venv\Scripts\activate`  
+* Access to the branch who contain the latest update : `git checkout QA`
+* Install the necessary libraries: `pip install -r requirements.txt` 
+* Run the webserver : `python .\server.py`  
 
-    This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
-
-2. Getting Started
-
-    This project uses the following technologies:
-
-    * Python v3.x+
-
-    * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
-
-        Whereas Django does a lot of things for us out of the box, Flask allows us to add only what we need. 
-     
-
-    * [Virtual environment](https://virtualenv.pypa.io/en/stable/installation.html)
-
-        This ensures you'll be able to install the correct packages without interfering with Python on your machine.
-
-        Before you begin, please ensure you have this installed globally. 
-
-
-3. Installation
-
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
-
-    - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
-
-    - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
-
-    - Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set the file to be <code>server.py</code>. Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
-
-    - You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
-
-4. Current Setup
-
-    The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around having a DB until we actually need one. The main ones are:
-     
-    * competitions.json - list of competitions
-    * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
-
-5. Testing
-
-    You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
-
-    We also like to show how well we're testing, so there's a module called 
-    [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
-
+## Many issues have to be debugged, bellow list of them:
+* Error "Entering a unknown email crashes the app":
+  * Description : when entering an inval email to login, app crash
+  * Why this issue : the request used to select account associated to the email provided return None when no account associated
+  * Resolution : adding function to search club associated to email provided. If no => display warning message
+  * branch : https://github.com/LeChat76/Projet11OC/tree/error/Entering_a_unknown_email_crashes_the_app
+* Bug "Clubs should not be able to use more than their points allowed":
+  * Descrition : when a club purchase places for a competition, if the club have not enough points, purchase is done anyway (and amount of points become negative!)
+  * Why this issue : no check of amount point of the club who purchase places
+  * Resolution : adding the condition "if" amount of point is enough to purchase places, if not => display warning message
+  * branch : https://github.com/LeChat76/Projet11OC/tree/bug/Clubs_should_not_be_able_to_use_more_than_their_points_allowed
+* Bug "Clubs shouldn't be able to book more than 12 places per competition":
+  * Description : a club must not purchase more than 12 points
+  * Why this issue : noting coded to prevent purchase of more than 12 places
+  * Resolution : adding tag max="12" in HTML page. In that way, unable to enter more than 12 places to purchase
+  branch : https://github.com/LeChat76/Projet11OC/tree/bug/Clubs_shouldnt_be_able_to_book_more_than_12_places_per_competition
+* Bug "Booking places in past competitions":
+  * Description : a club must not be able to purchase places for a dated competition
+  * Why this issue : nothing coded to check date of competition purchased
+  * Resolution : adding the condition "if" date of competition purchased is inferior to now => display warning message
+  * Branch : https://github.com/LeChat76/Projet11OC/tree/bug/Booking_places_in_past_competitions
+* Bug "Point updates are not reflected":
+  * Description : when purchase places of competition, amount of point of the club remain the same
+  * Why this issue : no calculation of remain point after purchasing
+  * Resolution : adding calculation "current point" - "purchased point"
+  * Branch : https://github.com/LeChat76/Projet11OC/tree/bug/Point_updates_are_not_reflected
+* Feature : "Implement Points Display Board":
+  * Description : users need to access to an board with all places available for all competitions, no need to login to access to this feature
+  * Resolution : added http link to this feature from homepage and create a new html page with board and shade of grey for improved readability
+  * Branch : https://github.com/LeChat76/Projet11OC/tree/feature/Implement_Points_Display_Board
+* Personnal debugging:
+  * no reflection in json file : adding function to write data to json file
+  * adding confirmation message when purchasing places (adding number of places purchased and for which competition)
+  * prevent purchasing more place than available in competition
+  * adding min value for purchase (min=1 because it's just logic ;-))
+  * Branch : https://github.com/LeChat76/Projet11OC/tree/feature/Personnals_features
