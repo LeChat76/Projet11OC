@@ -15,5 +15,6 @@
     {% if get_flashed_messages() %}
     <p style="color: red;">{{ get_flashed_messages()[0] }}</p>
     {% endif %}
+    <a href="{{ url_for('clubsSummary') }}">Clubs summary</a>
 </body>
 </html>
