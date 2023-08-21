@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clubsSummary.css') }}">
+    <title>Clubs summary | GUDLFT</title>
+</head>
+<body>
+    <table class="gray-table">
+        <tr>
+            <th>Competition Name</th>
+            <th>Date</th>
+            <th>Number of Places</th>
+        </tr>
+        {% for comp in competitions %}
+        <tr>
+            <td>{{ comp['name'] }}</td>
+            <td>{{ comp['date'] }}</td>
+            <td>{{ comp['numberOfPlaces'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
