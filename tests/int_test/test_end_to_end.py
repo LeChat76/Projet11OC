@@ -36,7 +36,7 @@ def test_purchasing(_, client, clubs, competitions, purchase_context_3):
 def test_logout(client):
     response = client.get('/logout')
     assert response.status_code == 302
-    assert response.headers['Location'] == 'http://localhost/'
+    assert response.headers['Location'] == '/'
 
 @pytest.mark.int_test
 def test_access_clubsSummary(client):
