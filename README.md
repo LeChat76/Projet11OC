@@ -71,7 +71,7 @@ All test are made with 'fake file data import'. In that way, I don't take care a
 </p>
 
 ## Performance
-First : launch web server from your IDE : from the root folder, execute `python .\server.py`  
+First : launch web server from your IDE(if not already running) : from the root folder, execute `python .\server.py`  
 Then : from your IDE, launch locust to collect data : from the root folder, execute `locust -f .\tests\perf_tests\locustfile.py`  
 Finaly : to see result, from your favorite web navigator, open http://localhost:8089/  
 When connected to locust web interface, simulate 6 users (one per seconds) on the web site GUDLFT  <p align="left">
