@@ -25,6 +25,20 @@ def searchClub(email):
     else:
         return None
 
+def foundClub(club_name):
+    club = [c for c in clubs if c['name'] == club_name][0]
+    if club:
+        return club
+    else:
+        return None
+
+def foundCompetition(competition_name):
+    competition = [c for c in competitions if c['name'] == competition_name][0]
+    if competition:
+        return competition
+    else:
+        return None
+
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
@@ -45,17 +59,15 @@ def showSummary():
         flash(error_message)
         return redirect(url_for('index'))
 
-
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    club = foundClub(club)
+    competition = foundCompetition(competition)
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        return render_template('booking.html',club=club,competition=competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
-
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
