@@ -40,7 +40,7 @@ def foundCompetition(competition_name):
         return None
 
 app = Flask(__name__)
-app.secret_key = 'something_special'
+app.secret_key = '5dd482ba05ef7210b35344c6a25e8779'
 
 competitions = loadCompetitions()
 clubs = loadClubs()
@@ -49,27 +49,27 @@ clubs = loadClubs()
 def index():
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+@app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = searchClub(request.form['email'])
     if club:
-        return render_template('welcome.html',club=club,competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions)
     else:
-        error_message = "Club not found for the provided email."
+        error_message = 'Club not found for the provided email.'
         flash(error_message)
         return redirect(url_for('index'))
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
+def book(competition, club):
     club = foundClub(club)
     competition = foundCompetition(competition)
     if club and competition:
-        return render_template('booking.html',club=club,competition=competition)
+        return render_template('booking.html', club=club, competition=competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = foundCompetition(request.form['competition'])
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
@@ -77,22 +77,26 @@ def purchasePlaces():
     competition_numberOfPlaces = int(competition['numberOfPlaces'])
     club = foundClub(request.form['club'])
     club_points = int(club['points'])
-    club_name = club['name']
-    placesRequired = int(request.form['places'])
-    if placesRequired > club_points:
-        error_message = "You have not enough point."
-        flash(error_message)
-        return render_template('welcome.html', club=club, competitions=competitions)
-    elif placesRequired > 12 or placesRequired < 1:
-        error_message = "You can only purchase from 1 to 12 places."
-        flash(error_message)
-        return render_template('welcome.html', club=club, competitions=competitions)
-    elif datetime.now() > competition_date:
-        error_message = "This competition is closed!"
-        flash(error_message)
-        return render_template('welcome.html', club=club, competitions=competitions)
-    elif placesRequired > competition_numberOfPlaces:
-        error_message = "You booked more than available place in this competition!"
+    if request.form['places'].isdigit():
+        placesRequired = int(request.form['places'])
+        if placesRequired > club_points:
+            error_message = 'You have not enough point.'
+            flash(error_message)
+            return render_template('welcome.html', club=club, competitions=competitions)
+        elif placesRequired > 12 or placesRequired < 1:
+            error_message = 'You can only purchase from 1 to 12 places.'
+            flash(error_message)
+            return render_template('welcome.html', club=club, competitions=competitions)
+        elif datetime.now() > competition_date:
+            error_message = 'This competition is closed!'
+            flash(error_message)
+            return render_template('welcome.html', club=club, competitions=competitions)
+        elif placesRequired > competition_numberOfPlaces:
+            error_message = 'You booked more than available place in this competition!'
+            flash(error_message)
+            return render_template('welcome.html', club=club, competitions=competitions)
+    else:
+        error_message = 'Thanks to use numeric value!'
         flash(error_message)
         return render_template('welcome.html', club=club, competitions=competitions)
     club['points'] = club_points - placesRequired
@@ -103,11 +107,9 @@ def purchasePlaces():
     flash(flash_message)
     return render_template('welcome.html', club=club, competitions=competitions)
 
-
 @app.route('/clubsSummary')
 def clubsSummary():
     return render_template('clubsSummary.html', competitions=competitions)
-
 
 @app.route('/logout')
 def logout():
