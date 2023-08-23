@@ -26,16 +26,16 @@ def searchClub(email):
         return None
 
 def foundClub(club_name):
-    club = [c for c in clubs if c['name'] == club_name][0]
-    if club:
-        return club
+    club = [c for c in clubs if c['name'] == club_name]
+    if len(club) > 0:
+        return club[0]
     else:
         return None
 
 def foundCompetition(competition_name):
-    competition = [c for c in competitions if c['name'] == competition_name][0]
-    if competition:
-        return competition
+    competition = [c for c in competitions if c['name'] == competition_name]
+    if len(competition) > 0:
+        return competition[0]
     else:
         return None
 
@@ -63,7 +63,7 @@ def showSummary():
 def book(competition,club):
     club = foundClub(club)
     competition = foundCompetition(competition)
-    if foundClub and foundCompetition:
+    if club and competition:
         return render_template('booking.html',club=club,competition=competition)
     else:
         flash("Something went wrong-please try again")
@@ -71,30 +71,31 @@ def book(competition,club):
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
+    competition = foundCompetition(request.form['competition'])
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
-    competition_point = int(competition['numberOfPlaces'])
     competition_name = competition['name']
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    competition_numberOfPlaces = int(competition['numberOfPlaces'])
+    club = foundClub(request.form['club'])
     club_points = int(club['points'])
+    club_name = club['name']
     placesRequired = int(request.form['places'])
     if placesRequired > club_points:
         error_message = "You have not enough point."
         flash(error_message)
-        return redirect(url_for('book', club=club['name'], competition=competition['name']))
+        return render_template('welcome.html', club=club, competitions=competitions)
     elif placesRequired > 12 or placesRequired < 1:
         error_message = "You can only purchase from 1 to 12 places."
         flash(error_message)
-        return redirect(url_for('book', club=club['name'], competition=competition['name']))
+        return render_template('welcome.html', club=club, competitions=competitions)
     elif datetime.now() > competition_date:
         error_message = "This competition is closed!"
         flash(error_message)
-        return redirect(url_for('book', club=club['name'], competition=competition['name']))
-    elif placesRequired > competition_point:
+        return render_template('welcome.html', club=club, competitions=competitions)
+    elif placesRequired > competition_numberOfPlaces:
         error_message = "You booked more than available place in this competition!"
         flash(error_message)
-        return redirect(url_for('book', club=club['name'], competition=competition['name']))
-    club['points'] = str((int(club['points']) - placesRequired))
+        return render_template('welcome.html', club=club, competitions=competitions)
+    club['points'] = club_points - placesRequired
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     write_data_to_json('clubs.json', {'clubs': clubs})
     write_data_to_json('competitions.json', {'competitions': competitions})
