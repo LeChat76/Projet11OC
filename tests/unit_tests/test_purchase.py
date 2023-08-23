@@ -4,8 +4,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import server
 
-@patch('server.write_data_to_json') # to prevent recording result in production's files, mocking write_data_to_json function with blank (=pass)
-def test_reservation_of_places_greater_than_the_number_of_places_Remaining(_, client, clubs, competitions, purchase_context_1):
+def test_reservation_of_places_greater_than_the_number_of_places_Remaining(client, clubs, competitions, purchase_context_1):
     """
     Test of purchase competition without enough competition places 
     Club 'Iron Temple' (remain 17 points) purchase 8 places in 'Fall Classic' competition where only 5 places remaining
@@ -15,16 +14,10 @@ def test_reservation_of_places_greater_than_the_number_of_places_Remaining(_, cl
     server.competitions = competitions
     server.clubs = clubs
     response = client.post('purchasePlaces', data=purchase_context_1)
-    with client.session_transaction() as session:
-        flashed_messages = session.get('_flashes', [])[0][1] if '_flashes' in session and session['_flashes'] else None
-    expected = 'You booked more than available place in this competition!'
-    print("\nFLASH", flashed_messages)
-    print("EXPECTED2", expected)
-    assert response.status_code == 302
-    assert flashed_messages == expected
+    assert response.status_code == 200
+    assert 'You booked more than available place in this competition!' in response.data.decode('UTF-8')
 
-@patch('server.write_data_to_json') # to prevent recording result in production's files, mocking write_data_to_json function with blank (=pass)
-def test_purchase_competition_without_enough_club_point(_, client, clubs, competitions, purchase_context_2):
+def test_purchase_competition_without_enough_club_point(client, clubs, competitions, purchase_context_2):
     """
     Test of purchase competition without enough club point 
     Club 'Simply Lift' (remain 1 points) purchase 3 places in 'Fall Classic' competition
@@ -33,11 +26,9 @@ def test_purchase_competition_without_enough_club_point(_, client, clubs, compet
 
     server.competitions = competitions
     server.clubs = clubs
-    response = client.post('purchasePlaces', data=purchase_context_2)
-    with client.session_transaction() as session:
-        flashed_messages = session.get('_flashes', [])[0][1] if '_flashes' in session and session['_flashes'] else None
-    assert response.status_code == 302
-    assert flashed_messages == 'You have not enough point.'
+    response = client.post('/purchasePlaces', data=purchase_context_2)
+    assert response.status_code == 200
+    assert 'You have not enough point.' in response.data.decode('UTF-8')
 
 @patch('server.write_data_to_json') # to prevent recording result in production's files, mocking write_data_to_json function with blank (=pass)
 def test_reservation_ok(_, client, clubs, competitions, purchase_context_3):
@@ -49,14 +40,11 @@ def test_reservation_ok(_, client, clubs, competitions, purchase_context_3):
 
     server.competitions = competitions
     server.clubs = clubs
-    response = client.post('purchasePlaces', data=purchase_context_3)
-    with client.session_transaction() as session:
-        flashed_messages = session.get('_flashes', [])[0][1] if '_flashes' in session and session['_flashes'] else None
+    response = client.post('/purchasePlaces', data=purchase_context_3)
     assert response.status_code == 200
-    assert flashed_messages is None
+    assert 'Great-booking complete!' in response.data.decode('UTF-8')
 
-@patch('server.write_data_to_json') # to prevent recording result in production's files, mocking write_data_to_json function with blank (=pass)
-def test_purchase_competition_of_more_than_12_points(_, client, clubs, competitions, purchase_context_4):
+def test_purchase_competition_of_more_than_12_points(client, clubs, competitions, purchase_context_4):
     """
     Test of purchase competition with valid entries
     Club 'Iron Temple' (remain 17 points) purchase 13 places in 'Test 12' competition where 25 places remaining
@@ -65,14 +53,11 @@ def test_purchase_competition_of_more_than_12_points(_, client, clubs, competiti
 
     server.competitions = competitions
     server.clubs = clubs
-    response = client.post('purchasePlaces', data=purchase_context_4)
-    with client.session_transaction() as session:
-        flashed_messages = session.get('_flashes', [])[0][1] if '_flashes' in session and session['_flashes'] else None
-    assert response.status_code == 302
-    assert flashed_messages == 'You can only purchase from 1 to 12 places.'
+    response = client.post('/purchasePlaces', data=purchase_context_4)
+    assert response.status_code == 200
+    assert 'You can only purchase from 1 to 12 places.' in response.data.decode('UTF-8')
 
-@patch('server.write_data_to_json') # to prevent recording result in production's files, mocking write_data_to_json function with blank (=pass)
-def test_purchase_dated_competition(_, client, clubs, competitions, purchase_context_5):
+def test_purchase_dated_competition(client, clubs, competitions, purchase_context_5):
     """
     Test of purchase competition with valid entries
     Club 'Iron Temple' (remain 17 points) purchase 5 places in 'Spring Festival' competition
@@ -81,9 +66,7 @@ def test_purchase_dated_competition(_, client, clubs, competitions, purchase_con
 
     server.competitions = competitions
     server.clubs = clubs
-    response = client.post('purchasePlaces', data=purchase_context_5)
-    with client.session_transaction() as session:
-        flashed_messages = session.get('_flashes', [])[0][1] if '_flashes' in session and session['_flashes'] else None
-    assert response.status_code == 302
-    assert flashed_messages == 'This competition is closed!'
+    response = client.post('/purchasePlaces', data=purchase_context_5)
+    assert response.status_code == 200
+    assert 'This competition is closed!' in response.data.decode('UTF-8')
     
