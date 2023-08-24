@@ -54,20 +54,28 @@ Debugging and testing web application coded with Flask.
   * Branch : https://github.com/LeChat76/Projet11OC/tree/feature/Personnals_features
 
 ## Tests
-All test are made with 'fake file data import'. In that way, I don't take care about data in production's file, tests will always make with specifics values.
-* unitary tests : execute `pytest -m 'not int_test` from the root of the project
+Those units tests are designed to test a maximum number of functions. Coverage score = 96%.
+* units tests : execute `pytest -v -m unit_test` from the root of the project
 <p align="left">
-    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/f8a574b5-bb5f-4e38-9f51-6a3363993536">
+    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/97001821-5618-4e6e-96c3-326c406cadd1">
+</p>
+Integration tests will try to make purchase and check balance with 2 cases : one valid and one invalid.  
+
+It will also test if access to the homepage and clubsSummary are possible.
+* integration tests : execute `pytest -v -m int_test` from the root of the project  
+<p align="left">
+    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/819082e9-c3b5-4834-91ab-7b9249b36f50">
 </p>
 
-* integration tests : execute `pytest -m int_test` from the root of the project  
+Functional test will try to emulate (with Selenium) the use of the web site and try to purchase places for an competition.  
+* Functional test : execute `pytest -v -m func_test` from the root of the project
 <p align="left">
-    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/a1af98a0-9b4c-486a-aabd-97f6478dae7b">
+    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/035f8a43-b82e-423d-b26a-6802666b0725">
 </p>
 
-* coverage : execute `pytest --cov=.` from the root of the project
+* coverage : execute `pytest .\tests\unit_tests\ --cov` from the root of the project
 <p align="left">
-    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/1141c477-57cb-47db-a20f-0e533615b79e">
+    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/e488c42d-6d82-4a24-95f2-bc6efa92d7e6">
 </p>
 
 ## Performance
