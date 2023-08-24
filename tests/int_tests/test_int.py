@@ -3,12 +3,9 @@ from server import replace_data_files, foundClub, foundCompetition, loadClubs, l
 
 
 replace_data_files()
-clubPointsBeforePurchase = int(foundClub('Iron Temple')['points'])
-print('\nclubPointsBeforePurchase1', clubPointsBeforePurchase)
 
 @pytest.mark.int_test
 def test_login_and_logout(client):
-    
     response = client.post('/showSummary', data={'email': 'admin@irontemple.com'})
     assert response.status_code == 200
     assert 'Welcome, admin@irontemple.com ' in response.data.decode()
@@ -25,6 +22,7 @@ def test_access_clubsSummary(client):
 @pytest.mark.int_test
 def test_purchasing_more_than_12_places_and_balance_keep_unchanged(client, purchase_context_4):
     # purchase_context_4 = 'Iron Temple' purchase 13 places for 'Test 12' competition
+    replace_data_files()
     club = purchase_context_4['club']
     clubPointsBeforePurchase = int(foundClub(club)['points'])
     competition = purchase_context_4['competition']
@@ -67,3 +65,4 @@ def test_purchasing_and_balance_update_checking(client, purchase_context_3):
     assert response.status_code == 200
     assert clubPointsBeforePurchase - nbPlacesToPurchase == clubPointsAfterPurchase
     assert competitionNumberOfPlacesBeforePurchase - nbPlacesToPurchase == competitionNmberOfPlacesAfterPurchase
+    replace_data_files()
