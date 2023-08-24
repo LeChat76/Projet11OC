@@ -22,7 +22,6 @@ def test_logout(client):
 def test_valid_booking(client, book_context_1):
     competition, club = book_context_1
     response = client.get(f'/book/{competition}/{club}')
-    print("DATA", response.data.decode('UTF-8'))
     assert response.status_code == 200
 
 def test_invalib_booking(client, book_context_2):

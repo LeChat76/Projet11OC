@@ -9,6 +9,11 @@
             "name": "Fall Classic",
             "date": "2027-10-22 13:30:00",
             "numberOfPlaces": 5
+        },
+        {
+            "name": "Test 12",
+            "date": "2027-10-22 13:30:00",
+            "numberOfPlaces": 25
         }
     ]
 }

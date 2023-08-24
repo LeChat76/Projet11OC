@@ -11,20 +11,6 @@ def client():
     yield client
 
 @pytest.fixture
-def clubs():
-    clubs = [{"name": "Simply Lift", "email": "john@simplylift.co", "points": 1},
-             {"name": "Iron Temple", "email": "admin@irontemple.com", "points": 17},
-             {"name": "She Lifts", "email": "kate@shelifts.co.uk", "points": 12},]
-    yield clubs
-
-@pytest.fixture
-def competitions():
-    competitions =  [{"name": "Spring Festival", "date": "2020-03-27 10:00:00", "numberOfPlaces": 25},
-                     {"name": "Fall Classic", "date": "2027-10-22 13:30:00", "numberOfPlaces": 5},
-                     {"name": "Test 12", "date": "2027-10-22 13:30:00", "numberOfPlaces": 25},]
-    yield competitions
-
-@pytest.fixture
 def purchase_context_1():
     data = {'club': 'Iron Temple', 'competition': 'Fall Classic', 'places': 8}
     return data
