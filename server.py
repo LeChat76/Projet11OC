@@ -4,8 +4,11 @@ from datetime import datetime
 
 
 def replace_data_files():
+    global clubs, competitions
     shutil.copyfile('datas/clubs.json', 'clubs.json')
     shutil.copyfile('datas/competitions.json', 'competitions.json')
+    clubs = loadClubs()
+    competitions = loadCompetitions()
 
 def write_data_to_json(filename, data):
     with open(filename, 'w') as file:
@@ -103,7 +106,7 @@ def purchasePlaces():
         flash(error_message)
         return render_template('welcome.html', club=club, competitions=competitions)
     club['points'] = club_points - placesRequired
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
     write_data_to_json('clubs.json', {'clubs': clubs})
     write_data_to_json('competitions.json', {'competitions': competitions})
     flash_message = f'Great-booking complete! You had booked {placesRequired} place(s) for competition "{competition_name}".'
