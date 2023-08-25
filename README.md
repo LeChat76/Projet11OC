@@ -54,7 +54,7 @@ Debugging and testing web application coded with Flask.
   * Branch : https://github.com/LeChat76/Projet11OC/tree/feature/Personnals_features
 
 ## Tests
-Those units tests are designed to test a maximum number of functions. Coverage score = 96%.
+Those units tests are designed to test a maximum number of functions. Coverage score = 99%.
 * units tests : execute `pytest -v -m unit_test` from the root of the project
 <p align="left">
     <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/97001821-5618-4e6e-96c3-326c406cadd1">
@@ -75,8 +75,11 @@ Functional test will try to emulate (with Selenium) the use of the web site and 
 
 * coverage : execute `pytest .\tests\unit_tests\ --cov` from the root of the project
 <p align="left">
-    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/e488c42d-6d82-4a24-95f2-bc6efa92d7e6">
+    <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/8697a3ca-cf74-400b-b361-349c33a18956">
 </p>
+
+* you can also export coverage in html to view wiche part of the code is not covered : `pytest -m unit_test --cov-report html --cov`  
+(`index.html` export to `htmlcov` from the root project)
 
 ## Performance
 First : launch web server from your IDE(if not already running) : from the root folder, execute `python .\server.py`  
