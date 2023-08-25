@@ -54,13 +54,15 @@ def test_purchase_competition_of_more_than_12_points(client, purchase_context_4)
     assert 'You can only purchase from 1 to 12 places.' in response.data.decode('UTF-8')
 
 @pytest.mark.unit_test
-def test_purchase_dated_competition(client, purchase_context_5):
+def test_purchase_with_non_numeric_value(client, purchase_context_6):
     """
     Test of purchase competition with valid entries
-    Club 'Iron Temple' (remain 17 points) purchase 5 places in 'Spring Festival' competition
-    Result must contain 'This competition is closed!'
+    Club 'Iron Temple' purchase non numeric value
+    Result must contain 'Thanks to use numeric value!'
     """
     replace_data_files()
-    response = client.post('/purchasePlaces', data=purchase_context_5)
+    response = client.post('/purchasePlaces', data=purchase_context_6)
     assert response.status_code == 200
-    assert 'This competition is closed!' in response.data.decode('UTF-8')
+    assert 'Thanks to use numeric value!' in response.data.decode('UTF-8')
+
+

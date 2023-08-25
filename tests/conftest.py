@@ -34,6 +34,11 @@ def purchase_context_5():
     return data
 
 @pytest.fixture
+def purchase_context_6():
+    data = {'club': 'Iron Temple', 'competition': 'Spring Festival', 'places': 'a'}
+    return data
+
+@pytest.fixture
 def book_context_1():
     competition = 'Fall Classic'
     club = 'Iron Temple'
