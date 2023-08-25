@@ -31,11 +31,12 @@ def test_purchasing_and_balance_update_checking(client, purchase_context_3):
     competition = foundCompetition(purchase_context_3['competition'])
     competitionNumberOfPlacesBeforePurchase = competition['numberOfPlaces']
     response = client.post('purchasePlaces', data=purchase_context_3)
-    clubPointsAfterPurchase = (foundClub(purchase_context_3['club']))['points']
-    competitionNmberOfPlacesAfterPurchase = (foundCompetition(purchase_context_3['competition']))['numberOfPlaces']
+    clubPointsAfterPurchase = club['points']
+    competitionNmberOfPlacesAfterPurchase = competition['numberOfPlaces']
     assert response.status_code == 200
     assert clubPointsBeforePurchase - nbPlacesToPurchase == clubPointsAfterPurchase
     assert competitionNumberOfPlacesBeforePurchase - nbPlacesToPurchase == competitionNmberOfPlacesAfterPurchase
+    assert 'Great-booking complete!' in response.data.decode('UTF-8')
 
 @pytest.mark.int_test
 def test_purchasing_more_than_12_places_and_balance_keep_unchanged(client, purchase_context_4):
@@ -46,8 +47,9 @@ def test_purchasing_more_than_12_places_and_balance_keep_unchanged(client, purch
     competition = foundCompetition(purchase_context_4['competition'])
     competitionNumberOfPlacesBeforePurchase = competition['numberOfPlaces']
     response = client.post('purchasePlaces', data=purchase_context_4)
-    clubPointsAfterPurchase = (foundClub(purchase_context_4['club']))['points']
-    competitionNmberOfPlacesAfterPurchase = (foundCompetition(purchase_context_4['competition']))['numberOfPlaces']
+    clubPointsAfterPurchase = club['points']
+    competitionNmberOfPlacesAfterPurchase = competition['numberOfPlaces']
     assert response.status_code == 200
     assert clubPointsBeforePurchase == clubPointsAfterPurchase
     assert competitionNumberOfPlacesBeforePurchase == competitionNmberOfPlacesAfterPurchase
+    assert 'You can only purchase from 1 to 12 places.' in response.data.decode('UTF-8')
