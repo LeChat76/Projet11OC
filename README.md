@@ -79,7 +79,7 @@ Functional test will try to emulate (with Selenium) the use of the web site and 
 </p>
 
 * you can also export coverage in html to view wiche part of the code is not covered : `pytest -m unit_test --cov-report html --cov`  
-(`index.html` export to `htmlcov` from the root project)
+(`index.html` exported to `htmlcov` folder from the root project)
 
 ## Performance
 First : launch web server from your IDE(if not already running) : from the root folder, execute `python .\server.py`  
