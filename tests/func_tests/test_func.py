@@ -17,12 +17,11 @@ def testFonctional():
     # open GUDLFT web site
     browser.get("http:/localhost:5000")
     assert 'GUDLFT Registration' == browser.title
-    time.sleep(1)
 
     # search 'email' input field + fillin with value 'admin@irontemple.com'
     search_field = browser.find_element(By.NAME, 'email')
     search_field.send_keys('admin@irontemple.com')
-    time.sleep(2)
+    time.sleep(1)
     search_field.send_keys(Keys.RETURN)
     time.sleep(1)
 
