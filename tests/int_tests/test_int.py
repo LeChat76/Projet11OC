@@ -3,7 +3,7 @@ import shutil
 # import sys
 # import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from server import replace_data_files, foundClub, foundCompetition, loadClubs, loadCompetitions
+from server import replace_data_files, foundClub, foundCompetition
 
 
 @pytest.mark.int_test
