@@ -1,10 +1,5 @@
 import pytest
-import shutil
-# import sys
-# import os
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from server import replace_data_files, foundClub, foundCompetition
-
+from utils import loadClubFromFile, loadCompetitionFromFile, init_database
 
 @pytest.mark.int_test
 def test_login_and_logout(client):
@@ -24,15 +19,26 @@ def test_access_clubsSummary(client):
 @pytest.mark.int_test
 def test_purchasing_and_balance_update_checking(client, purchase_context_3):
     # purchase_context_3 = Iron Temple purchase 3 places for Fall Classic competition where remaing 5 places
-    replace_data_files()
-    club = foundClub(purchase_context_3['club'])
-    clubPointsBeforePurchase = club['points']
+    init_database()
+    club = loadClubFromFile(purchase_context_3['club'])
+    print('\nclubBefore', club)
+    competition = loadCompetitionFromFile(purchase_context_3['competition'])
+    print('competitionBefore', competition)
     nbPlacesToPurchase = int(purchase_context_3['places'])
-    competition = foundCompetition(purchase_context_3['competition'])
+    print('nbPlacesToPurchase', nbPlacesToPurchase)
+    clubPointsBeforePurchase = club['points']
+    print('clubPointsBeforePurchase', clubPointsBeforePurchase)
     competitionNumberOfPlacesBeforePurchase = competition['numberOfPlaces']
+    print('competitionNumberOfPlacesBeforePurchase', competitionNumberOfPlacesBeforePurchase)
     response = client.post('purchasePlaces', data=purchase_context_3)
+    club = loadClubFromFile(purchase_context_3['club'])
+    print('clubAfter', club)
+    competition = loadCompetitionFromFile(purchase_context_3['competition'])
+    print('competitionAfter', competition)
     clubPointsAfterPurchase = club['points']
+    print('clubPointsAfterPurchase', clubPointsAfterPurchase)
     competitionNmberOfPlacesAfterPurchase = competition['numberOfPlaces']
+    print('competitionNmberOfPlacesAfterPurchase', competitionNmberOfPlacesAfterPurchase)
     assert response.status_code == 200
     assert clubPointsBeforePurchase - nbPlacesToPurchase == clubPointsAfterPurchase
     assert competitionNumberOfPlacesBeforePurchase - nbPlacesToPurchase == competitionNmberOfPlacesAfterPurchase
@@ -41,12 +47,14 @@ def test_purchasing_and_balance_update_checking(client, purchase_context_3):
 @pytest.mark.int_test
 def test_purchasing_more_than_12_places_and_balance_keep_unchanged(client, purchase_context_4):
     # purchase_context_4 = 'Iron Temple' purchase 13 places for 'Test 12' competition
-    replace_data_files()
-    club = foundClub(purchase_context_4['club'])
+    init_database()
+    club = loadClubFromFile(purchase_context_4['club'])
+    competition = loadCompetitionFromFile(purchase_context_4['competition'])
     clubPointsBeforePurchase = club['points']
-    competition = foundCompetition(purchase_context_4['competition'])
     competitionNumberOfPlacesBeforePurchase = competition['numberOfPlaces']
     response = client.post('purchasePlaces', data=purchase_context_4)
+    club = loadClubFromFile(purchase_context_4['club'])
+    competition = loadCompetitionFromFile(purchase_context_4['competition'])
     clubPointsAfterPurchase = club['points']
     competitionNmberOfPlacesAfterPurchase = competition['numberOfPlaces']
     assert response.status_code == 200
