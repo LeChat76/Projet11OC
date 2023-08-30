@@ -3,13 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-from server import replace_data_files
+from utils import init_database
 
 
 @pytest.mark.func_test
 def testFonctional():
     # replace json files for the test
-    replace_data_files()
+    init_database()
 
     # create firefox session
     browser = webdriver.Firefox()

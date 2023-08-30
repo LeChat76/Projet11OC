@@ -3,13 +3,6 @@ from flask import Flask, render_template, request, redirect, flash,url_for
 from datetime import datetime
 
 
-def replace_data_files():
-    global clubs, competitions
-    shutil.copyfile('datas/clubs.json', 'clubs.json')
-    shutil.copyfile('datas/competitions.json', 'competitions.json')
-    competitions = loadCompetitions()
-    clubs = loadClubs()
-
 def write_data_to_json(filename, data):
     with open(filename, 'w') as file:
         json.dump(data, file, indent=4)
