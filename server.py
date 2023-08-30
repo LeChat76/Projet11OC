@@ -1,4 +1,4 @@
-import json, shutil
+import json
 from flask import Flask, render_template, request, redirect, flash,url_for
 from datetime import datetime
 
@@ -17,21 +17,21 @@ def loadCompetitions():
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
-def searchClub(email):
+def searchClubByEmail(email):
     result = [club for club in clubs if club['email'] == email]
     if result:
         return result[0]
     else:
         return None
 
-def foundClub(club_name):
+def searchClubByName(club_name):
     club = [c for c in clubs if c['name'] == club_name]
     if len(club) > 0:
         return club[0]
     else:
         return None
 
-def foundCompetition(competition_name):
+def searchCompetitionByName(competition_name):
     competition = [c for c in competitions if c['name'] == competition_name]
     if len(competition) > 0:
         return competition[0]
@@ -50,7 +50,7 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
-    club = searchClub(request.form['email'])
+    club = searchClubByEmail(request.form['email'])
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
@@ -60,8 +60,8 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
-    club = foundClub(club)
-    competition = foundCompetition(competition)
+    club = searchClubByName(club)
+    competition = searchCompetitionByName(competition)
     if club and competition:
         return render_template('booking.html', club=club, competition=competition)
     else:
@@ -70,11 +70,11 @@ def book(competition, club):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
-    competition = foundCompetition(request.form['competition'])
+    competition = searchCompetitionByName(request.form['competition'])
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
     competition_name = competition['name']
     competition_numberOfPlaces = int(competition['numberOfPlaces'])
-    club = foundClub(request.form['club'])
+    club = searchClubByName(request.form['club'])
     club_points = int(club['points'])
     if request.form['places'].isdigit():
         placesRequired = int(request.form['places'])
