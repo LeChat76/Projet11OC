@@ -130,6 +130,7 @@ def purchasePlaces():
 
 @app.route('/clubsSummary')
 def clubsSummary():
+    competitions = loadCompetitions()
     return render_template('clubsSummary.html', competitions=competitions)
 
 @app.route('/logout')

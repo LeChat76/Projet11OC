@@ -80,12 +80,12 @@ Functional test will try to emulate (with Selenium) the use of the web site and 
     <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/035f8a43-b82e-423d-b26a-6802666b0725">
 </p>
 
-* coverage : execute `pytest .\tests\unit_tests\ --cov` from the root of the project
+* coverage : execute `pytest -m unit_test --cov` from the root of the project
 <p align="left">
     <img alt="logo" src="https://github.com/LeChat76/Projet11OC/assets/119883313/8697a3ca-cf74-400b-b361-349c33a18956">
 </p>
 
-* you can also export coverage in html to view wiche part of the code is not covered : `pytest -m unit_test --cov-report html --cov`  
+* you can also export coverage in html to view wiche part of the code is not covered : `pytest -m unit_test --cov-report html`  
 (`index.html` exported to `htmlcov` folder from the root project)
 
 ## Performance
