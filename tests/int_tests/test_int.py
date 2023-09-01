@@ -21,24 +21,15 @@ def test_purchasing_and_balance_update_checking(client, purchase_context_3):
     # purchase_context_3 = Iron Temple purchase 3 places for Fall Classic competition where remaing 5 places
     init_database()
     club = loadClubFromFile(purchase_context_3['club'])
-    print('\nclubBefore', club)
     competition = loadCompetitionFromFile(purchase_context_3['competition'])
-    print('competitionBefore', competition)
     nbPlacesToPurchase = int(purchase_context_3['places'])
-    print('nbPlacesToPurchase', nbPlacesToPurchase)
     clubPointsBeforePurchase = club['points']
-    print('clubPointsBeforePurchase', clubPointsBeforePurchase)
     competitionNumberOfPlacesBeforePurchase = competition['numberOfPlaces']
-    print('competitionNumberOfPlacesBeforePurchase', competitionNumberOfPlacesBeforePurchase)
     response = client.post('purchasePlaces', data=purchase_context_3)
     club = loadClubFromFile(purchase_context_3['club'])
-    print('clubAfter', club)
     competition = loadCompetitionFromFile(purchase_context_3['competition'])
-    print('competitionAfter', competition)
     clubPointsAfterPurchase = club['points']
-    print('clubPointsAfterPurchase', clubPointsAfterPurchase)
     competitionNmberOfPlacesAfterPurchase = competition['numberOfPlaces']
-    print('competitionNmberOfPlacesAfterPurchase', competitionNmberOfPlacesAfterPurchase)
     assert response.status_code == 200
     assert clubPointsBeforePurchase - nbPlacesToPurchase == clubPointsAfterPurchase
     assert competitionNumberOfPlacesBeforePurchase - nbPlacesToPurchase == competitionNmberOfPlacesAfterPurchase

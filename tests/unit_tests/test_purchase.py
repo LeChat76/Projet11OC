@@ -29,6 +29,7 @@ def test_purchase_competition_without_enough_club_point(client, purchase_context
     Club 'Simply Lift' (remain 1 points) purchase 3 places in 'Fall Classic' competition
     Result should be 'You have not enough point.' and club points and number of places available of the competition must remain the same
     """
+
     init_database()
     clubPointsBeforePurchase = loadClubFromFile(purchase_context_2['club'])['points']
     competitionPointsBeforePurchase = loadCompetitionFromFile(purchase_context_2['competition'])['numberOfPlaces']
@@ -47,6 +48,7 @@ def test_reservation_ok(client, purchase_context_3):
     Club 'Iron Temple' (remain 17 points) purchase 3 places in 'Fall Classic' competition where 5 places remaining
     Result must contain 'Great-booking complete!' and club points and number of places available of the competition must must be updated in json files
     """
+
     init_database()
     clubPointsBeforePurchase = loadClubFromFile(purchase_context_3['club'])['points']
     competitionPointsBeforePurchase = loadCompetitionFromFile(purchase_context_3['competition'])['numberOfPlaces']
@@ -104,6 +106,7 @@ def test_purchase_with_non_numeric_value(client, purchase_context_6):
     Club 'Iron Temple' purchase non numeric value
     Result must contain 'Thanks to use numeric value!'
     """
+
     init_database()
     response = client.post('/purchasePlaces', data=purchase_context_6)
     assert response.status_code == 200

@@ -18,6 +18,7 @@ def loadCompetitions():
          return listOfCompetitions
 
 def searchClubByEmail(email):
+    clubs = loadClubs()
     result = [club for club in clubs if club['email'] == email]
     if result:
         return result[0]
@@ -25,6 +26,7 @@ def searchClubByEmail(email):
         return None
 
 def searchClubByName(club_name):
+    clubs = loadClubs()
     club = [c for c in clubs if c['name'] == club_name]
     if len(club) > 0:
         return club[0]
@@ -32,11 +34,27 @@ def searchClubByName(club_name):
         return None
 
 def searchCompetitionByName(competition_name):
+    competitions = loadCompetitions()
     competition = [c for c in competitions if c['name'] == competition_name]
     if len(competition) > 0:
         return competition[0]
     else:
         return None
+
+def updateClubPoints(club_name, purchased_points):
+    clubs = loadClubs()
+    for club in clubs:
+        if club['name'] == club_name:
+            club['points'] -= purchased_points
+    return clubs
+
+def updateCompetitionNumberOfPlaces(competition_name, purchased_points):
+    competitions = loadCompetitions()
+    for competition in competitions:
+        if competition['name'] == competition_name:
+            competition['numberOfPlaces'] -= purchased_points
+
+    return competitions
 
 app = Flask(__name__)
 app.secret_key = '5dd482ba05ef7210b35344c6a25e8779'
@@ -52,6 +70,7 @@ def index():
 def showSummary():
     club = searchClubByEmail(request.form['email'])
     if club:
+        competitions = loadCompetitions()
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
         error_message = 'Club not found for the provided email.'
@@ -70,11 +89,13 @@ def book(competition, club):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
+    competitions = loadCompetitions()
     competition = searchCompetitionByName(request.form['competition'])
     competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
     competition_name = competition['name']
     competition_numberOfPlaces = int(competition['numberOfPlaces'])
     club = searchClubByName(request.form['club'])
+    club_name = club['name']
     club_points = int(club['points'])
     if request.form['places'].isdigit():
         placesRequired = int(request.form['places'])
@@ -99,7 +120,8 @@ def purchasePlaces():
         flash(error_message)
         return render_template('welcome.html', club=club, competitions=competitions)
     club['points'] = club_points - placesRequired
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+    clubs = updateClubPoints(club_name, placesRequired)
+    competitions = updateCompetitionNumberOfPlaces(competition_name, placesRequired)
     write_data_to_json('clubs.json', {'clubs': clubs})
     write_data_to_json('competitions.json', {'competitions': competitions})
     flash_message = f'Great-booking complete! You had booked {placesRequired} place(s) for competition "{competition_name}".'
