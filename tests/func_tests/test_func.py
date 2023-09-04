@@ -36,10 +36,19 @@ def testFonctional():
     search_field.send_keys('1')
     time.sleep(1)
     search_field.send_keys(Keys.RETURN)
-    time.sleep(1)
+    time.sleep(2)
 
     #logout
     browser.find_element(By.XPATH, '//a[@href="/logout"]').click()
+    time.sleep(1)
+
+    # display club summary table
+    browser.find_element(By.XPATH, '//a[@href="/clubsSummary"]').click()
+    time.sleep(2)
+
+    # go back to main menu
+    browser.find_element(By.XPATH, '//a[@href="/"]').click()
+    time.sleep(1)
 
     # Close web browser
     browser.quit()
